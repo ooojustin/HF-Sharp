@@ -2,6 +2,8 @@
 
 An open source .NET API wrapper for HackForums.
 
+Want the PHP version? Take a look at [HF-PHP](https://github.com/ooojustin/HF-PHP)
+
 ## Notes
 
 * This project may be updated once the API v2 is out. Feel free to make pull requests.

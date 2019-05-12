@@ -4,7 +4,7 @@ An open source .NET API wrapper for HackForums.
 
 ## Notes
 
-* This project may be update once the API v2 is out. Feel free to make pull requests.
+* This project may be updated once the API v2 is out. Feel free to make pull requests.
 * Now available on NuGet! - [HF-Sharp](https://www.nuget.org/packages/HF-Sharp)
 
 ## Authors

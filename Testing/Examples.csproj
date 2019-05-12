@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C85BFA02-2588-47D6-ACEB-22069956FDFE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>HF_Sharp</RootNamespace>
-    <AssemblyName>HF-Sharp</AssemblyName>
+    <ProjectGuid>{446D0F42-98AB-4184-8CCD-C829B25205F5}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Testing</RootNamespace>
+    <AssemblyName>Testing</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,12 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="HF-Sharp">
+      <HintPath>..\bin\Debug\HF-Sharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,21 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HF-API.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialized\ApiResponse.cs" />
-    <Compile Include="Serialized\CategoryInformation.cs" />
-    <Compile Include="Serialized\ForumInformation.cs" />
-    <Compile Include="Serialized\GroupInformation.cs" />
-    <Compile Include="Serialized\PostInformation.cs" />
-    <Compile Include="Serialized\PrivateMessages.cs" />
-    <Compile Include="Serialized\ThreadInformation.cs" />
-    <Compile Include="Serialized\UserInformation.cs" />
-    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

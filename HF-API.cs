@@ -1,31 +1,36 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Reflection;
 using HF_Sharp.Serialized;
-using System.Dynamic;
+using HF_Sharp.Networking;
 
 namespace HF_Sharp {
 
+    /// <summary>
+    /// HackForums API wrapper class.
+    /// </summary>
     public class HF_API {
 
-        private const string API_URL = "https://hackforums.net/api/v1/";
+        private readonly HttpClient Client = new HttpClient(); 
 
-        private float Version = 0;
-        private string ApiKey = string.Empty;
-        private string UserAgent = string.Empty;
+        /// <summary>
+        /// Creates an instance of the HackForums API wrapper.
+        /// </summary>
+        /// <param name="apiKey">Your API key, provided by HackForums.</param>
+        /// <param name="userAgent">Application name, to be used in user-agent.</param>
+        /// <param name="version">Optional version number. If not provided, version will be derived from assembly.</param>
+        public HF_API(string apiKey, string userAgent, string version = "") {
 
-        public HF_API(string apiKey, string userAgent) {
+            // if version application isn't specified, use refelection to get assembly version
+            if (version == string.Empty)
+                version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            ApiKey = apiKey;
-            UserAgent = userAgent;
-
-            string versionRaw = GET("?version");
-            dynamic versionData = JsonConvert.DeserializeObject(versionRaw);
-            Version = versionData.apiVersion;
+            // initialize authorization/user-agent haeders for future requests
+            Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Utils.Base64Encode(apiKey + ":"));
+            Client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(userAgent, Assembly.GetExecutingAssembly().GetName().Version.ToString()));
 
         }
 
@@ -33,7 +38,9 @@ namespace HF_Sharp {
         /// Gets the API version, stored upon instantiation.
         /// </summary>
         public float GetVersion() {
-            return Version;
+            string versionRaw = Client.ApiGet("?version");
+            dynamic versionData = JsonConvert.DeserializeObject(versionRaw);
+            return versionData.apiVersion;
         }
 
         /// <summary>
@@ -41,36 +48,69 @@ namespace HF_Sharp {
         /// </summary>
         public UserInformation GetUserInformation(int uid) {
             string path = "user/" + uid;
-            return GET<UserInformation>(path);
+            return Client.ApiGet<UserInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a user, given the UID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<UserInformation> GetUserInformationAsync(int uid) {
+            string path = "user/" + uid;
+            return await Client.ApiGetAsync<UserInformation>(path);
         }
 
         /// <summary>
         /// Returns information about a category, given the CID.
-        /// NOTE: type "c" = category, type "f" = forum
         /// </summary>
         public CategoryInformation GetCategoryInformation(int cid) {
             string path = "category/" + cid;
-            return GET<CategoryInformation>(path);
+            return Client.ApiGet<CategoryInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a category, given the CID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<CategoryInformation> GetCategoryInformationAsync(int cid) {
+            string path = "category/" + cid;
+            return await Client.ApiGetAsync<CategoryInformation>(path);
         }
 
         /// <summary>
         /// Returns information about a forum, given the FID.
-        /// Includes all threads inside the forum, to be used for navigation.
-        /// NOTE: type "c" = category, type "f" = forum
         /// </summary>
         public ForumInformation GetForumInformation(int fid) {
             string path = "forum/" + fid;
-            return GET<ForumInformation>(path);
+            return Client.ApiGet<ForumInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a forum, given the FID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<ForumInformation> GetForumInformationAsync(int fid) {
+            string path = "forum/" + fid;
+            return await Client.ApiGetAsync<ForumInformation>(path);
         }
 
         /// <summary>
         /// Returns information about a thread, given the TID.
-        /// Includes 10 posts on the specified page number. Default page = 1.
         /// </summary>
         public ThreadInformation GetThreadInformation(int tid, int page = 1, bool raw = true) {
             string path = "thread/" + tid + "?page=" + page;
             if (raw) path = path.Replace("?page=", "?raw&page=");
-            return GET<ThreadInformation>(path);
+            return Client.ApiGet<ThreadInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a thread, given the TID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<ThreadInformation> GetThreadInformationAsync(int tid, int page = 1, bool raw = true) {
+            string path = "thread/" + tid + "?page=" + page;
+            if (raw) path = path.Replace("?page=", "?raw&page=");
+            return await Client.ApiGetAsync<ThreadInformation>(path);
         }
 
         /// <summary>
@@ -78,7 +118,16 @@ namespace HF_Sharp {
         /// </summary>
         public PostInformation GetPostInformation(int pid, bool raw = true) {
             string path = "post/" + pid + (raw ? "?raw" : string.Empty);
-            return GET<PostInformation>(path);
+            return Client.ApiGet<PostInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a post, given the PID;
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<PostInformation> GetPostInformationAsync(int pid, bool raw = true) {
+            string path = "post/" + pid + (raw ? "?raw" : string.Empty);
+            return await Client.ApiGetAsync<PostInformation>(path);
         }
 
         /// <summary>
@@ -86,7 +135,16 @@ namespace HF_Sharp {
         /// </summary>
         public PrivateMessageContainer GetPrivateMessageContainer(InboxType box = InboxType.Inbox, int page = 1) {
             string path = "pmbox/" + box + "?page=" + page;
-            return GET<PrivateMessageContainer>(path);
+            return Client.ApiGet<PrivateMessageContainer>(path);
+        }
+
+        /// <summary>
+        /// Returns a struct containing information about the specified InboxType alongside a list of messages.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<PrivateMessageContainer> GetPrivateMessageContainerAsync(InboxType box = InboxType.Inbox, int page = 1) {
+            string path = "pmbox/" + box + "?page=" + page;
+            return await Client.ApiGetAsync<PrivateMessageContainer>(path);
         }
 
         /// <summary>
@@ -99,11 +157,30 @@ namespace HF_Sharp {
         }
 
         /// <summary>
+        /// Returns a list of private messages from the specified inbox type.
+        /// Note that it will return up to 25 messages, depending on the specified page.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<List<PrivateMessageInformation>> GetPrivateMessagesAsync(InboxType box = InboxType.Inbox, int page = 1) {
+            PrivateMessageContainer container = await GetPrivateMessageContainerAsync(box, page);
+            return container.pms;
+        }
+
+        /// <summary>
         /// Returns a PrivateMessage object, containg actual 'message' content from a specified PMID.
         /// </summary>
         public PrivateMessage GetPrivateMessage(int pmid) {
             string path = "pm/" + pmid;
-            return GET<PrivateMessage>(path);
+            return Client.ApiGet<PrivateMessage>(path);
+        }
+
+        /// <summary>
+        /// Returns a PrivateMessage object, containg actual 'message' content from a specified PMID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<PrivateMessage> GetPrivateMessageAsync(int pmid) {
+            string path = "pm/" + pmid;
+            return await Client.ApiGetAsync<PrivateMessage>(path);
         }
 
         /// <summary>
@@ -111,41 +188,16 @@ namespace HF_Sharp {
         /// </summary>
         public GroupInformation GetGroupInformation(int gid) {
             string path = "group/" + gid;
-            return GET<GroupInformation>(path);
+            return Client.ApiGet<GroupInformation>(path);
         }
 
         /// <summary>
-        /// Standard GET request, returns a response string.
+        /// Returns information about a HackForums group given the GID.
+        /// This variant runs asychronously.
         /// </summary>
-        private string GET(string path) {
-            using (WebClient web = GetClient()) {
-                return web.DownloadString(API_URL + path);
-            }
-        }
-
-        /// <summary>
-        /// API GET request which automatically converts 'result' property of a normal API response to provided type T.
-        /// </summary>
-        private T GET<T>(string path) {
-            string raw = GET(path);
-            HF_API_Response response = JsonConvert.DeserializeObject<HF_API_Response>(raw);
-            if (response.success) {
-                string resultString = JsonConvert.SerializeObject(response.result);
-                return JsonConvert.DeserializeObject<T>(resultString);
-            } else {
-                throw new Exception("HF-API Request Failed: " + response.message);
-            }
-        }
-
-        /// <summary>
-        /// Initializes and returns an authorized WebClient object.
-        /// </summary>
-        private WebClient GetClient() {
-            WebClient web = new WebClient();
-            string auth = "Basic " + Utils.Base64Encode(ApiKey + ":");
-            web.Headers.Add(HttpRequestHeader.Authorization, auth);
-            web.Headers.Add(HttpRequestHeader.UserAgent, UserAgent);
-            return web;
+        public async Task<GroupInformation> GetGroupInformationAsync(int gid) {
+            string path = "group/" + gid;
+            return await Client.ApiGetAsync<GroupInformation>(path);
         }
 
     }

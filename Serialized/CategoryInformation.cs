@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HF_Sharp.Serialized {
 
+    /// <summary>
+    /// Serialized data returned by GET category/:id
+    /// </summary>
     public struct CategoryInformation {
 
         /// <summary>

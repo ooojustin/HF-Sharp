@@ -9,13 +9,7 @@ namespace HF_Sharp.Serialized {
     /// <summary>
     /// Standard response format when an API query is completed.
     /// </summary>
-    public class HF_API_Response {
-
-        public HF_API_Response(bool success, string message) {
-            this.success = success;
-            this.message = message;
-            result = null;
-        }
+    public struct HF_API_Response {
 
         /// <summary>
         /// Whether or not the API request was completed successfully.

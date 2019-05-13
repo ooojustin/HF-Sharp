@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HF_Sharp.Serialized {
 
+    /// <summary>
+    /// Serialized data returned by GET forum/:id
+    /// </summary>
     public struct ForumInformation {
 
         /// <summary>

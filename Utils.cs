@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HF_Sharp {
 
+    /// <summary>
+    /// General utility functions used by HF-Sharp.
+    /// </summary>
     public class Utils {
 
         /// <summary>

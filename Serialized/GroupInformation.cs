@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HF_Sharp.Serialized {
 
+    /// <summary>
+    /// Serialized data returned by GET group/:id
+    /// </summary>
     public struct GroupInformation {
 
         /// <summary>
@@ -20,7 +23,7 @@ namespace HF_Sharp.Serialized {
         public int type;
         
         /// <summary>
-        /// A description of the group & it's purpose.
+        /// A description of the group and it's purpose.
         /// </summary>
         public string description;
 
@@ -41,10 +44,19 @@ namespace HF_Sharp.Serialized {
 
     }
 
+    /// <summary>
+    /// Represents an owner/leader in a group.
+    /// </summary>
     public struct GroupMember {
 
+        /// <summary>
+        /// Users unique ID on HackForums.
+        /// </summary>
         public int uid;
 
+        /// <summary>
+        /// Users username on HackForums.
+        /// </summary>
         public string username;
 
     }

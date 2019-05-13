@@ -1,15 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using HF_Sharp.Serialized;
-using System.Dynamic;
-using System.IO;
 using System.Net.Http;
 using System.Reflection;
+using HF_Sharp.Serialized;
 
 namespace HF_Sharp {
 
@@ -58,11 +53,29 @@ namespace HF_Sharp {
         }
 
         /// <summary>
+        /// Returns information about a user, given the UID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<UserInformation> GetUserInformationAsync(int uid) {
+            string path = "user/" + uid;
+            return await GETAsync<UserInformation>(path);
+        }
+
+        /// <summary>
         /// Returns information about a category, given the CID.
         /// </summary>
         public CategoryInformation GetCategoryInformation(int cid) {
             string path = "category/" + cid;
             return GET<CategoryInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a category, given the CID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<CategoryInformation> GetCategoryInformationAsync(int cid) {
+            string path = "category/" + cid;
+            return await GETAsync<CategoryInformation>(path);
         }
 
         /// <summary>
@@ -74,13 +87,31 @@ namespace HF_Sharp {
         }
 
         /// <summary>
+        /// Returns information about a forum, given the FID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<ForumInformation> GetForumInformationAsync(int fid) {
+            string path = "forum/" + fid;
+            return await GETAsync<ForumInformation>(path);
+        }
+
+        /// <summary>
         /// Returns information about a thread, given the TID.
-        /// Includes 10 posts on the specified page number. Default page = 1.
         /// </summary>
         public ThreadInformation GetThreadInformation(int tid, int page = 1, bool raw = true) {
             string path = "thread/" + tid + "?page=" + page;
             if (raw) path = path.Replace("?page=", "?raw&page=");
             return GET<ThreadInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a thread, given the TID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<ThreadInformation> GetThreadInformationAsync(int tid, int page = 1, bool raw = true) {
+            string path = "thread/" + tid + "?page=" + page;
+            if (raw) path = path.Replace("?page=", "?raw&page=");
+            return await GETAsync<ThreadInformation>(path);
         }
 
         /// <summary>
@@ -92,11 +123,29 @@ namespace HF_Sharp {
         }
 
         /// <summary>
+        /// Returns information about a post, given the PID;
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<PostInformation> GetPostInformationAsync(int pid, bool raw = true) {
+            string path = "post/" + pid + (raw ? "?raw" : string.Empty);
+            return await GETAsync<PostInformation>(path);
+        }
+
+        /// <summary>
         /// Returns a struct containing information about the specified InboxType alongside a list of messages.
         /// </summary>
         public PrivateMessageContainer GetPrivateMessageContainer(InboxType box = InboxType.Inbox, int page = 1) {
             string path = "pmbox/" + box + "?page=" + page;
             return GET<PrivateMessageContainer>(path);
+        }
+
+        /// <summary>
+        /// Returns a struct containing information about the specified InboxType alongside a list of messages.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<PrivateMessageContainer> GetPrivateMessageContainerAsync(InboxType box = InboxType.Inbox, int page = 1) {
+            string path = "pmbox/" + box + "?page=" + page;
+            return await GETAsync<PrivateMessageContainer>(path);
         }
 
         /// <summary>
@@ -109,6 +158,16 @@ namespace HF_Sharp {
         }
 
         /// <summary>
+        /// Returns a list of private messages from the specified inbox type.
+        /// Note that it will return up to 25 messages, depending on the specified page.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<List<PrivateMessageInformation>> GetPrivateMessagesAsync(InboxType box = InboxType.Inbox, int page = 1) {
+            PrivateMessageContainer container = await GetPrivateMessageContainerAsync(box, page);
+            return container.pms;
+        }
+
+        /// <summary>
         /// Returns a PrivateMessage object, containg actual 'message' content from a specified PMID.
         /// </summary>
         public PrivateMessage GetPrivateMessage(int pmid) {
@@ -117,11 +176,29 @@ namespace HF_Sharp {
         }
 
         /// <summary>
+        /// Returns a PrivateMessage object, containg actual 'message' content from a specified PMID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<PrivateMessage> GetPrivateMessageAsync(int pmid) {
+            string path = "pm/" + pmid;
+            return await GETAsync<PrivateMessage>(path);
+        }
+
+        /// <summary>
         /// Returns information about a HackForums group given the GID.
         /// </summary>
         public GroupInformation GetGroupInformation(int gid) {
             string path = "group/" + gid;
             return GET<GroupInformation>(path);
+        }
+
+        /// <summary>
+        /// Returns information about a HackForums group given the GID.
+        /// This variant runs asychronously.
+        /// </summary>
+        public async Task<GroupInformation> GetGroupInformationAsync(int gid) {
+            string path = "group/" + gid;
+            return await GETAsync<GroupInformation>(path);
         }
 
         /// <summary>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HF_Sharp.Serialized {
 
+    /// <summary>
+    /// Serialized data returned by GET post/:id
+    /// </summary>
     public struct PostInformation {
 
         /// <summary>
@@ -18,10 +21,13 @@ namespace HF_Sharp.Serialized {
         /// </summary>
         public int pid;
 
+        /// <summary>?</summary>
         public int parent;
 
+        /// <summary>?</summary>
         public int fid;
 
+        /// <summary>?</summary>
         public string subject;
 
         /// <summary>

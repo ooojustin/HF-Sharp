@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HF_Sharp.Serialized {
 
+    /// <summary>
+    /// Serialized data returned by GET pm/:id
+    /// </summary>
     public struct PrivateMessage {
 
         /// <summary>
@@ -50,6 +53,9 @@ namespace HF_Sharp.Serialized {
 
     }
 
+    /// <summary>
+    /// Serialized data returned by GET pmbox/:id
+    /// </summary>
     public struct PrivateMessageContainer {
 
         /// <summary>
@@ -58,6 +64,9 @@ namespace HF_Sharp.Serialized {
         /// </summary>
         public string pmbox;
 
+        /// <summary>
+        /// Contains information regarding pagination.
+        /// </summary>
         public PrivateMessagePageInformation pageInfo;
 
         /// <summary>
@@ -67,6 +76,9 @@ namespace HF_Sharp.Serialized {
 
     }
 
+    /// <summary>
+    /// Serialized data returned in a list as 'pms' property from PrivateMessageContainer.
+    /// </summary>
     public struct PrivateMessageInformation {
 
         /// <summary>
@@ -119,6 +131,9 @@ namespace HF_Sharp.Serialized {
 
     }
 
+    /// <summary>
+    /// Serialized data regarding the pagination of messages.
+    /// </summary>
     public struct PrivateMessagePageInformation {
 
         /// <summary>
@@ -132,20 +147,38 @@ namespace HF_Sharp.Serialized {
     /// Known inbox type ids, used to retrieve PMs from different sections of a users private messages.
     /// </summary>
     public enum InboxType {
+
+        /// <summary>Default message folder, containing received messages.</summary>
         Inbox = 1,
+
+        /// <summary>Contains outgoing messages sent to other users/</summary>
         Sent = 2,
+
+        /// <summary>Contains uncompleted messages.</summary>
         Drafts = 3,
+
+        /// <summary>Contains deleted messages.</summary>
         Trash = 4
+
     }
 
     /// <summary>
     /// Status of the message in the users inbox.
     /// </summary>
     public enum MessageStatus {
-        Unopened = 0, // the message is in the users inbox and has not yet been opened
-        Opened = 1, // the message has been opened by the user, but not replied to yet
-        Unknown = 2, // ??? (i couldn't find any pms with this status)
-        RepliedTo = 3 // we've replied to the message
+
+        /// <summary>The message is in the users inbox and has not yet been opened.</summary>
+        Unopened = 0,
+
+        /// <summary>The message has been opened, but has not been replied to yet.</summary>
+        Opened = 1,
+
+        /// <summary>?</summary>
+        Unknown = 2,
+
+        /// <summary>A message that has already been replied to.</summary>
+        RepliedTo = 3
+
     }
 
 }

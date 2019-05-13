@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Reflection;
 using HF_Sharp.Serialized;
+using HF_Sharp.Networking;
 
 namespace HF_Sharp {
 
@@ -12,8 +13,6 @@ namespace HF_Sharp {
     /// HackForums API wrapper class.
     /// </summary>
     public class HF_API {
-
-        private const string API_URL = "https://hackforums.net/api/v1/";
 
         private readonly HttpClient Client = new HttpClient(); 
 
@@ -39,7 +38,7 @@ namespace HF_Sharp {
         /// Gets the API version, stored upon instantiation.
         /// </summary>
         public float GetVersion() {
-            string versionRaw = GET("?version");
+            string versionRaw = Client.ApiGet("?version");
             dynamic versionData = JsonConvert.DeserializeObject(versionRaw);
             return versionData.apiVersion;
         }
@@ -49,7 +48,7 @@ namespace HF_Sharp {
         /// </summary>
         public UserInformation GetUserInformation(int uid) {
             string path = "user/" + uid;
-            return GET<UserInformation>(path);
+            return Client.ApiGet<UserInformation>(path);
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<UserInformation> GetUserInformationAsync(int uid) {
             string path = "user/" + uid;
-            return await GETAsync<UserInformation>(path);
+            return await Client.ApiGetAsync<UserInformation>(path);
         }
 
         /// <summary>
@@ -66,7 +65,7 @@ namespace HF_Sharp {
         /// </summary>
         public CategoryInformation GetCategoryInformation(int cid) {
             string path = "category/" + cid;
-            return GET<CategoryInformation>(path);
+            return Client.ApiGet<CategoryInformation>(path);
         }
 
         /// <summary>
@@ -75,7 +74,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<CategoryInformation> GetCategoryInformationAsync(int cid) {
             string path = "category/" + cid;
-            return await GETAsync<CategoryInformation>(path);
+            return await Client.ApiGetAsync<CategoryInformation>(path);
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace HF_Sharp {
         /// </summary>
         public ForumInformation GetForumInformation(int fid) {
             string path = "forum/" + fid;
-            return GET<ForumInformation>(path);
+            return Client.ApiGet<ForumInformation>(path);
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<ForumInformation> GetForumInformationAsync(int fid) {
             string path = "forum/" + fid;
-            return await GETAsync<ForumInformation>(path);
+            return await Client.ApiGetAsync<ForumInformation>(path);
         }
 
         /// <summary>
@@ -101,7 +100,7 @@ namespace HF_Sharp {
         public ThreadInformation GetThreadInformation(int tid, int page = 1, bool raw = true) {
             string path = "thread/" + tid + "?page=" + page;
             if (raw) path = path.Replace("?page=", "?raw&page=");
-            return GET<ThreadInformation>(path);
+            return Client.ApiGet<ThreadInformation>(path);
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace HF_Sharp {
         public async Task<ThreadInformation> GetThreadInformationAsync(int tid, int page = 1, bool raw = true) {
             string path = "thread/" + tid + "?page=" + page;
             if (raw) path = path.Replace("?page=", "?raw&page=");
-            return await GETAsync<ThreadInformation>(path);
+            return await Client.ApiGetAsync<ThreadInformation>(path);
         }
 
         /// <summary>
@@ -119,7 +118,7 @@ namespace HF_Sharp {
         /// </summary>
         public PostInformation GetPostInformation(int pid, bool raw = true) {
             string path = "post/" + pid + (raw ? "?raw" : string.Empty);
-            return GET<PostInformation>(path);
+            return Client.ApiGet<PostInformation>(path);
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<PostInformation> GetPostInformationAsync(int pid, bool raw = true) {
             string path = "post/" + pid + (raw ? "?raw" : string.Empty);
-            return await GETAsync<PostInformation>(path);
+            return await Client.ApiGetAsync<PostInformation>(path);
         }
 
         /// <summary>
@@ -136,7 +135,7 @@ namespace HF_Sharp {
         /// </summary>
         public PrivateMessageContainer GetPrivateMessageContainer(InboxType box = InboxType.Inbox, int page = 1) {
             string path = "pmbox/" + box + "?page=" + page;
-            return GET<PrivateMessageContainer>(path);
+            return Client.ApiGet<PrivateMessageContainer>(path);
         }
 
         /// <summary>
@@ -145,7 +144,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<PrivateMessageContainer> GetPrivateMessageContainerAsync(InboxType box = InboxType.Inbox, int page = 1) {
             string path = "pmbox/" + box + "?page=" + page;
-            return await GETAsync<PrivateMessageContainer>(path);
+            return await Client.ApiGetAsync<PrivateMessageContainer>(path);
         }
 
         /// <summary>
@@ -172,7 +171,7 @@ namespace HF_Sharp {
         /// </summary>
         public PrivateMessage GetPrivateMessage(int pmid) {
             string path = "pm/" + pmid;
-            return GET<PrivateMessage>(path);
+            return Client.ApiGet<PrivateMessage>(path);
         }
 
         /// <summary>
@@ -181,7 +180,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<PrivateMessage> GetPrivateMessageAsync(int pmid) {
             string path = "pm/" + pmid;
-            return await GETAsync<PrivateMessage>(path);
+            return await Client.ApiGetAsync<PrivateMessage>(path);
         }
 
         /// <summary>
@@ -189,7 +188,7 @@ namespace HF_Sharp {
         /// </summary>
         public GroupInformation GetGroupInformation(int gid) {
             string path = "group/" + gid;
-            return GET<GroupInformation>(path);
+            return Client.ApiGet<GroupInformation>(path);
         }
 
         /// <summary>
@@ -198,59 +197,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<GroupInformation> GetGroupInformationAsync(int gid) {
             string path = "group/" + gid;
-            return await GETAsync<GroupInformation>(path);
-        }
-
-        /// <summary>
-        /// Standard GET request, returns a response string.
-        /// </summary>
-        private string GET(string path) {
-            string url = API_URL + path;
-            using (HttpResponseMessage responseMessage = Client.GetAsync(url).Result) {
-                string response = responseMessage.Content.ReadAsStringAsync().Result;
-                return response;
-            }
-        }
-
-        /// <summary>
-        /// Asynchronous GET request, returns a task of return type string.
-        /// </summary>
-        private async Task<string> GETAsync(string path) {
-            string url = API_URL + path;
-            using (HttpResponseMessage responseMessage = await Client.GetAsync(url)) {
-                string response = await responseMessage.Content.ReadAsStringAsync();
-                return response;
-            }
-        }
-
-        /// <summary>
-        /// API GET request which automatically converts 'result' property of a normal API response to provided type T.
-        /// </summary>
-        private T GET<T>(string path) {
-            string raw = GET(path);
-            return GetApiResult<T>(raw);
-        }
-
-        /// <summary>
-        /// API GET request which automatically converts 'result' property of a normal API response to provided type T.
-        /// This variant executes the GET request asynchronously.
-        /// </summary>
-        private async Task<T> GETAsync<T>(string path) {
-            string raw = await GETAsync(path);
-            return GetApiResult<T>(raw);
-        }
-
-        /// <summary>
-        /// Parses raw API response data and deserializes 'result' property into provided type.
-        /// </summary>
-        private static T GetApiResult<T>(string data) {
-            HF_API_Response response = JsonConvert.DeserializeObject<HF_API_Response>(data);
-            if (response.success) {
-                string resultString = JsonConvert.SerializeObject(response.result);
-                return JsonConvert.DeserializeObject<T>(resultString);
-            } else {
-                throw new Exception("HF-API Request Failed: " + response.message);
-            }
+            return await Client.ApiGetAsync<GroupInformation>(path);
         }
 
     }

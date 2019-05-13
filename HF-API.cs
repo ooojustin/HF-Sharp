@@ -7,25 +7,36 @@ using System.Text;
 using System.Threading.Tasks;
 using HF_Sharp.Serialized;
 using System.Dynamic;
+using System.IO;
+using System.Net.Http;
+using System.Reflection;
 
 namespace HF_Sharp {
 
+    /// <summary>
+    /// HackForums API wrapper class.
+    /// </summary>
     public class HF_API {
 
         private const string API_URL = "https://hackforums.net/api/v1/";
 
-        private float Version = 0;
-        private string ApiKey = string.Empty;
-        private string UserAgent = string.Empty;
+        private readonly HttpClient Client = new HttpClient(); 
 
-        public HF_API(string apiKey, string userAgent) {
+        /// <summary>
+        /// Creates an instance of the HackForums API wrapper.
+        /// </summary>
+        /// <param name="apiKey">Your API key, provided by HackForums.</param>
+        /// <param name="userAgent">Application name, to be used in user-agent.</param>
+        /// <param name="version">Optional version number. If not provided, version will be derived from assembly.</param>
+        public HF_API(string apiKey, string userAgent, string version = "") {
 
-            ApiKey = apiKey;
-            UserAgent = userAgent;
+            // if version application isn't specified, use refelection to get assembly version
+            if (version == string.Empty)
+                version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            string versionRaw = GET("?version");
-            dynamic versionData = JsonConvert.DeserializeObject(versionRaw);
-            Version = versionData.apiVersion;
+            // initialize authorization/user-agent haeders for future requests
+            Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Utils.Base64Encode(apiKey + ":"));
+            Client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(userAgent, Assembly.GetExecutingAssembly().GetName().Version.ToString()));
 
         }
 
@@ -33,7 +44,9 @@ namespace HF_Sharp {
         /// Gets the API version, stored upon instantiation.
         /// </summary>
         public float GetVersion() {
-            return Version;
+            string versionRaw = GET("?version");
+            dynamic versionData = JsonConvert.DeserializeObject(versionRaw);
+            return versionData.apiVersion;
         }
 
         /// <summary>
@@ -46,7 +59,6 @@ namespace HF_Sharp {
 
         /// <summary>
         /// Returns information about a category, given the CID.
-        /// NOTE: type "c" = category, type "f" = forum
         /// </summary>
         public CategoryInformation GetCategoryInformation(int cid) {
             string path = "category/" + cid;
@@ -55,8 +67,6 @@ namespace HF_Sharp {
 
         /// <summary>
         /// Returns information about a forum, given the FID.
-        /// Includes all threads inside the forum, to be used for navigation.
-        /// NOTE: type "c" = category, type "f" = forum
         /// </summary>
         public ForumInformation GetForumInformation(int fid) {
             string path = "forum/" + fid;
@@ -118,8 +128,21 @@ namespace HF_Sharp {
         /// Standard GET request, returns a response string.
         /// </summary>
         private string GET(string path) {
-            using (WebClient web = GetClient()) {
-                return web.DownloadString(API_URL + path);
+            string url = API_URL + path;
+            using (HttpResponseMessage responseMessage = Client.GetAsync(url).Result) {
+                string response = responseMessage.Content.ReadAsStringAsync().Result;
+                return response;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronous GET request, returns a task of return type string.
+        /// </summary>
+        private async Task<string> GETAsync(string path) {
+            string url = API_URL + path;
+            using (HttpResponseMessage responseMessage = await Client.GetAsync(url)) {
+                string response = await responseMessage.Content.ReadAsStringAsync();
+                return response;
             }
         }
 
@@ -128,24 +151,29 @@ namespace HF_Sharp {
         /// </summary>
         private T GET<T>(string path) {
             string raw = GET(path);
-            HF_API_Response response = JsonConvert.DeserializeObject<HF_API_Response>(raw);
+            return GetApiResult<T>(raw);
+        }
+
+        /// <summary>
+        /// API GET request which automatically converts 'result' property of a normal API response to provided type T.
+        /// This variant executes the GET request asynchronously.
+        /// </summary>
+        private async Task<T> GETAsync<T>(string path) {
+            string raw = await GETAsync(path);
+            return GetApiResult<T>(raw);
+        }
+
+        /// <summary>
+        /// Parses raw API response data and deserializes 'result' property into provided type.
+        /// </summary>
+        private static T GetApiResult<T>(string data) {
+            HF_API_Response response = JsonConvert.DeserializeObject<HF_API_Response>(data);
             if (response.success) {
                 string resultString = JsonConvert.SerializeObject(response.result);
                 return JsonConvert.DeserializeObject<T>(resultString);
             } else {
                 throw new Exception("HF-API Request Failed: " + response.message);
             }
-        }
-
-        /// <summary>
-        /// Initializes and returns an authorized WebClient object.
-        /// </summary>
-        private WebClient GetClient() {
-            WebClient web = new WebClient();
-            string auth = "Basic " + Utils.Base64Encode(ApiKey + ":");
-            web.Headers.Add(HttpRequestHeader.Authorization, auth);
-            web.Headers.Add(HttpRequestHeader.UserAgent, UserAgent);
-            return web;
         }
 
     }

@@ -13,7 +13,7 @@ namespace HF_Sharp.Networking {
     /// Class containing extension functions accessible via the HF_Sharp.Networking namespace.
     /// Used for sending/parsing web requests to HF API. It is assumed that provided HttpClient is authorized.
     /// </summary>
-    public static class Networking {
+    public static class NetworkingExtensions {
 
         private const string API_URL = "https://hackforums.net/api/v1/";
 

@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HF-API.cs" />
+    <Compile Include="Networking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialized\ApiResponse.cs" />
     <Compile Include="Serialized\CategoryInformation.cs" />

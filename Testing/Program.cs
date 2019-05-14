@@ -15,7 +15,7 @@ namespace Testing {
 
             Console.WriteLine("\nTesting GetUserInformation...");
             UserInformation user = api.GetUserInformation(3241222);
-            Console.WriteLine("username: " + user.username);
+            Console.WriteLine("username: " + user.Username);
 
             Console.WriteLine("\nTesting GetCategoryInformation...");
             CategoryInformation category = api.GetCategoryInformation(151);

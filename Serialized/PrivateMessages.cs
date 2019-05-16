@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,42 +15,50 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// UID of the receiver of the message.
         /// </summary>
-        public int to;
+        [JsonProperty("to")]
+        public int ToID { get; set; }
 
         /// <summary>
         /// Username of the receiver of the message.
         /// </summary>
-        public string tousername;
+        [JsonProperty("tousername")]
+        public string ToUsername { get; set; }
 
         /// <summary>
         /// UID of the sender of the message.
         /// </summary>
-        public int from;
+        [JsonProperty("from")]
+        public int FromID { get; set; }
 
         /// <summary>
         /// Username of the receiver of the message.
         /// </summary>
-        public string fromusername;
+        [JsonProperty("fromusername")]
+        public string FromUsername { get; set; }
 
         /// <summary>
         /// Subject of the message.
         /// </summary>
-        public string subject;
+        [JsonProperty("subject")]
+        public string Subject;
 
         /// <summary>
         /// Contents of the message.
         /// </summary>
-        public string message;
+        [JsonProperty("message")]
+        public string Message;
 
         /// <summary>
         /// The date/time that the message was sent at.
         /// </summary>
-        public DateTime dateline;
+        [JsonProperty("dateline")]
+        public DateTime DateTime;
 
         /// <summary>
         /// The folder that the message is inside of.
         /// </summary>
-        public int folder;
+        [JsonProperty("folder")]
+        public int FolderID;
 
     }
 
@@ -62,17 +71,20 @@ namespace HF_Sharp.Serialized {
         /// The name of the current box.
         /// Something like 'inbox', 'sent', or 'trash'.
         /// </summary>
-        public string pmbox;
+        [JsonProperty("pmbox")]
+        public string ContainerName;
 
         /// <summary>
         /// Contains information regarding pagination.
         /// </summary>
-        public PrivateMessagePageInformation pageInfo;
+        [JsonProperty("pageInfo")]
+        public PrivateMessagePageInformation PageInfo;
 
         /// <summary>
         /// A list of pms, with their subjects and ids.
         /// </summary>
-        public List<PrivateMessageInformation> pms;
+        [JsonProperty("pms")]
+        public List<PrivateMessageInformation> PMs;
 
     }
 
@@ -84,49 +96,57 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// Unique message id number.
         /// </summary>
-        public int pmid;
+        [JsonProperty("pmid")]
+        public int ID { get; set; }
 
         /// <summary>
         /// Subject of the message.
         /// </summary>
-        public string subject;
+        [JsonProperty("subject")]
+        public string Subject { get; set; }
 
         /// <summary>
         /// Username of the sender of the message.
         /// </summary>
-        public string senderusername;
+        [JsonProperty("senderusername")]
+        public string FromUsername { get; set; }
 
         /// <summary>
         /// UID of the sender of the message.
         /// </summary>
-        public int sender;
+        [JsonProperty("sender")]
+        public int FromID { get; set; }
 
         /// <summary>
         /// Username of the receiver of the message.
         /// </summary>
-        public string recipientusername;
+        [JsonProperty("recipientusername")]
+        public string ToUsername { get; set; }
 
         /// <summary>
         /// UID of the receiver of the message.
         /// </summary>
-        public int recipient;
+        [JsonProperty("recipient")]
+        public int ToID { get; set; }
 
         /// <summary>
         /// Status of the message in the users inbox.
         /// </summary>
-        public MessageStatus status;
+        [JsonProperty("status")]
+        public MessageStatus Status { get; set; }
 
         /// <summary>
         /// The date/time the message was sent at.
         /// </summary>
-        public DateTime dateline;
+        [JsonProperty("dateline")]
+        public DateTime DateTime { get; set; }
 
         /// <summary>
         /// Returns the actual PrivateMessage information (with 'message' content) from the current message information.
         /// Provide an instance of the HF_API class to make the API call from.
         /// </summary>
         public PrivateMessage GetPrivateMessage(HF_API api) {
-            return api.GetPrivateMessage(pmid);
+            return api.GetPrivateMessage(ID);
         }
 
     }
@@ -139,7 +159,8 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// The total number of private messages in the current box.
         /// </summary>
-        public int total;
+        [JsonProperty("total")]
+        public int TotalMessages;
 
     }
 

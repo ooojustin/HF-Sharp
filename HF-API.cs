@@ -12,7 +12,7 @@ namespace HF_Sharp {
     /// <summary>
     /// HackForums API wrapper class.
     /// </summary>
-    public class HF_API {
+    public class HF_API : IDisposable {
 
         private readonly HttpClient Client = new HttpClient(); 
 
@@ -153,7 +153,7 @@ namespace HF_Sharp {
         /// </summary>
         public List<PrivateMessageInformation> GetPrivateMessages(InboxType box = InboxType.Inbox, int page = 1) {
             PrivateMessageContainer container = GetPrivateMessageContainer(box, page);
-            return container.pms;
+            return container.PMs;
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace HF_Sharp {
         /// </summary>
         public async Task<List<PrivateMessageInformation>> GetPrivateMessagesAsync(InboxType box = InboxType.Inbox, int page = 1) {
             PrivateMessageContainer container = await GetPrivateMessageContainerAsync(box, page);
-            return container.pms;
+            return container.PMs;
         }
 
         /// <summary>
@@ -198,6 +198,13 @@ namespace HF_Sharp {
         public async Task<GroupInformation> GetGroupInformationAsync(int gid) {
             string path = "group/" + gid;
             return await Client.ApiGetAsync<GroupInformation>(path);
+        }
+
+        /// <summary>
+        /// Dispose/relase both managed and unmanaged resources.
+        /// </summary>
+        public void Dispose() {
+            Client?.Dispose();
         }
 
     }

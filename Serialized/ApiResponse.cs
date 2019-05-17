@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +15,20 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// Whether or not the API request was completed successfully.
         /// </summary>
-        public bool success;
+        [JsonProperty("success")]
+        public bool Success;
 
         /// <summary>
         /// A message from the API, only set when 'success' is false. Serves as an error message.
         /// </summary>
-        public string message;
+        [JsonProperty("message")]
+        public string Message;
 
         /// <summary>
         /// The actual response/data we asked for.
         /// </summary>
-        public dynamic result;
+        [JsonProperty("result")]
+        public dynamic Result;
 
     }
 

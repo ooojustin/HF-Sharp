@@ -61,11 +61,11 @@ namespace HF_Sharp.Networking {
         /// </summary>
         private static T GetApiResult<T>(string data) {
             HF_API_Response response = JsonConvert.DeserializeObject<HF_API_Response>(data);
-            if (response.success) {
-                string resultString = JsonConvert.SerializeObject(response.result);
+            if (response.Success) {
+                string resultString = JsonConvert.SerializeObject(response.Result);
                 return JsonConvert.DeserializeObject<T>(resultString);
             } else {
-                throw new Exception("HF-API Request Failed: " + response.message);
+                throw new Exception("HF-API Request Failed: " + response.Message);
             }
         }
 

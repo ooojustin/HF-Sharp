@@ -19,35 +19,35 @@ namespace Testing {
 
             Console.WriteLine("\nTesting GetCategoryInformation...");
             CategoryInformation category = api.GetCategoryInformation(151);
-            Console.WriteLine("category name: " + category.name);
+            Console.WriteLine("category name: " + category.Name);
 
             Console.WriteLine("\nTesting GetForumInformation...");
             ForumInformation forum = api.GetForumInformation(208);
-            Console.WriteLine("forum name: " + forum.name);
+            Console.WriteLine("forum name: " + forum.Name);
 
             Console.WriteLine("\nTesting GetThreadInformation...");
             ThreadInformation thread = api.GetThreadInformation(5665556);
-            Console.WriteLine("thread name: " + thread.subject);
+            Console.WriteLine("thread name: " + thread.Subject);
 
             Console.WriteLine("\nTesting GetPostInformation...");
             PostInformation post = api.GetPostInformation(58564495);
-            Console.WriteLine("post message: " + post.message);
+            Console.WriteLine("post message: " + post.Message);
 
             Console.WriteLine("\nTesting GetPrivateMessageContainer...");
             PrivateMessageContainer privateMessageContainer = api.GetPrivateMessageContainer();
-            Console.WriteLine("box information: " + privateMessageContainer.pmbox + ", " + privateMessageContainer.pageInfo.total + " messages");
+            Console.WriteLine("box information: " + privateMessageContainer.ContainerName + ", " + privateMessageContainer.PageInfo.TotalMessages + " messages");
 
             Console.WriteLine("\nTesting GetPrivateMessages...");
             List<PrivateMessageInformation> messages = api.GetPrivateMessages();
-            Console.WriteLine("got messages: " + messages.Count + " total, first id: " + messages[0].pmid);
+            Console.WriteLine("got messages: " + messages.Count + " total, first id: " + messages[0].ID);
 
             Console.WriteLine("\nTesting GetPrivateMessage...");
-            PrivateMessage message = api.GetPrivateMessage(messages[0].pmid);
-            Console.WriteLine("got message: from " + message.fromusername + ", to " + message.tousername + ", subject = " + message.subject);
+            PrivateMessage message = api.GetPrivateMessage(messages[0].ID);
+            Console.WriteLine("got message: from " + message.FromUsername + ", to " + message.ToUsername + ", subject = " + message.Subject);
 
             Console.WriteLine("\nTesting GetGroupInformation...");
             GroupInformation group = api.GetGroupInformation(52);
-            Console.WriteLine("group: " + group.name + ", owner: " + group.owner.username);
+            Console.WriteLine("group: " + group.Name + ", owner: " + group.Owner.Username);
 
             Console.ReadKey();
 

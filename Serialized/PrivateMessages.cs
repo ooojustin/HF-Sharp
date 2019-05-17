@@ -40,25 +40,25 @@ namespace HF_Sharp.Serialized {
         /// Subject of the message.
         /// </summary>
         [JsonProperty("subject")]
-        public string Subject;
+        public string Subject { get; set; }
 
         /// <summary>
         /// Contents of the message.
         /// </summary>
         [JsonProperty("message")]
-        public string Message;
+        public string Message { get; set; }
 
         /// <summary>
         /// The date/time that the message was sent at.
         /// </summary>
         [JsonProperty("dateline")]
-        public DateTime DateTime;
+        public DateTime DateTime { get; set; }
 
         /// <summary>
         /// The folder that the message is inside of.
         /// </summary>
         [JsonProperty("folder")]
-        public int FolderID;
+        public int FolderID { get; set; }
 
     }
 
@@ -72,19 +72,19 @@ namespace HF_Sharp.Serialized {
         /// Something like 'inbox', 'sent', or 'trash'.
         /// </summary>
         [JsonProperty("pmbox")]
-        public string ContainerName;
+        public string ContainerName { get; set; }
 
         /// <summary>
         /// Contains information regarding pagination.
         /// </summary>
         [JsonProperty("pageInfo")]
-        public PrivateMessagePageInformation PageInfo;
+        public PrivateMessagePageInformation PageInfo { get; set; }
 
         /// <summary>
         /// A list of pms, with their subjects and ids.
         /// </summary>
         [JsonProperty("pms")]
-        public List<PrivateMessageInformation> PMs;
+        public List<PrivateMessageInformation> PMs { get; set; }
 
     }
 
@@ -160,7 +160,7 @@ namespace HF_Sharp.Serialized {
         /// The total number of private messages in the current box.
         /// </summary>
         [JsonProperty("total")]
-        public int TotalMessages;
+        public int TotalMessages { get; set; }
 
     }
 

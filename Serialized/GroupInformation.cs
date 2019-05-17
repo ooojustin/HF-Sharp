@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,33 +15,39 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// The name of a group.
         /// </summary>
-        public string name;
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// An integer representing the type of group.
         /// I'm not really sure what the types are, and I couldn't find any documentation about it anywhere.
         /// </summary>
-        public int type;
-        
+        [JsonProperty("type")]
+        public int Type { get; set; }
+
         /// <summary>
         /// A description of the group and it's purpose.
         /// </summary>
-        public string description;
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Path to the group icon on HF server. (Image URL)
         /// </summary>
-        public string userbar;
+        [JsonProperty("userbar")]
+        public string UserBarPath { get; set; }
 
         /// <summary>
         /// The owner of the group.
         /// </summary>
-        public GroupMember owner;
+        [JsonProperty("owner")]
+        public GroupMember Owner { get; set; }
 
         /// <summary>
         /// Leaders of the group.
         /// </summary>
-        public List<GroupMember> leaders;
+        [JsonProperty("leaders")]
+        public List<GroupMember> Leaders { get; set; }
 
     }
 
@@ -52,12 +59,14 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// Users unique ID on HackForums.
         /// </summary>
-        public int uid;
+        [JsonProperty("uid")]
+        public int UserID { get; set; }
 
         /// <summary>
         /// Users username on HackForums.
         /// </summary>
-        public string username;
+        [JsonProperty("username")]
+        public string Username { get; set; }
 
     }
 

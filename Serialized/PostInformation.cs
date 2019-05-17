@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,52 +15,63 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// The id of the thread that the post is inside of.
         /// </summary>
-        public int tid;
+        [JsonProperty("tid")]
+        public int ThreadID { get; set; }
 
         /// <summary>
         /// The specific post id.
         /// </summary>
-        public int pid;
+        [JsonProperty("pid")]
+        public int ID { get; set; }
 
         /// <summary>?</summary>
-        public int parent;
+        [JsonProperty("parent")]
+        public int Parent { get; set; }
 
         /// <summary>?</summary>
-        public int fid;
+        [JsonProperty("fid")]
+        public int ForumID { get; set; }
 
         /// <summary>?</summary>
-        public string subject;
+        [JsonProperty("subject")]
+        public string Subject { get; set; }
 
         /// <summary>
         /// UID of the user who made the post.
         /// </summary>
-        public int uid;
+        [JsonProperty("uid")]
+        public int UserID { get; set; }
 
         /// <summary>
         /// Username of the user who made the post.
         /// </summary>
-        public string username;
+        [JsonProperty("username")]
+        public string Username { get; set; }
 
         /// <summary>
         /// Date/time the post was created at.
         /// </summary>
-        public DateTime dateline;
+        [JsonProperty("dateline")]
+        public DateTime DateTime { get; set; }
 
         /// <summary>
         /// The actual post message/contents.
         /// May be HTML depending on 'raw' variable in the function that retrieved it.
         /// </summary>
-        public string message;
+        [JsonProperty("message")]
+        public string Message { get; set; }
 
         /// <summary>
         /// UID of the last user to edit the post.
         /// </summary>
-        public int edituid;
+        [JsonProperty("edituid")]
+        public int LastEditUserID { get; set; }
 
         /// <summary>
         /// The date/time the post was last edited.
         /// </summary>
-        public DateTime edittime;
+        [JsonProperty("edittime")]
+        public DateTime LastEditDateTime { get; set; }
 
     }
 

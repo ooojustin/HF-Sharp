@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,32 +15,38 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// The name of the forum.
         /// </summary>
-        public string name;
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// A description of the designation of the forum.
         /// </summary>
-        public string description;
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// The type. 'f' = forum, 'c' = category.
         /// </summary>
-        public string type;
+        [JsonProperty("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Parent forum/category id.
         /// </summary>
-        public int parent;
+        [JsonProperty("parent")]
+        public int Parent { get; set; }
 
         /// <summary>
         /// The number of threads inside of the current forum.
         /// </summary>
-        public string numthreads;
+        [JsonProperty("numthreads")]
+        public string ThreadCount { get; set; }
 
         /// <summary>
         /// A list of ThreadInformation objects, containing some basic information used for navigation.
         /// </summary>
-        public List<ThreadInformation> threaddata;
+        [JsonProperty("threaddata")]
+        public List<ThreadInformation> Threads { get; set; }
 
     }
 

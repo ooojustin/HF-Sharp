@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,37 +15,44 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// The forum that the category is inside of.
         /// </summary>
-        public int fid;
+        [JsonProperty("fid")]
+        public int ID { get; set; }
 
         /// <summary>
         /// The name of the category.
         /// </summary>
-        public string name;
-        
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
         /// <summary>
         /// A description of the designation of the category.
         /// </summary>
-        public string description;
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// The type. 'f' = forum, 'c' = category.
         /// </summary>
-        public string type;
+        [JsonProperty("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Parent forum/category id.
         /// </summary>
-        public int parent;
+        [JsonProperty("parent")]
+        public int Parent { get; set; }
 
         /// <summary>
         /// The icon of the category, I assume, but it seems to always be 'NULL' for some reason.
         /// </summary>
-        public object ficon;
+        [JsonProperty("ficon")]
+        public object Icon { get; set; }
 
         /// <summary>
         /// Categories contained inside of the current category.
         /// </summary>
-        public List<CategoryInformation> children;
+        [JsonProperty("children")]
+        public List<CategoryInformation> Children { get; set; }
 
     }
 

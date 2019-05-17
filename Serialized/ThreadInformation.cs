@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,72 +15,86 @@ namespace HF_Sharp.Serialized {
         /// <summary>
         /// Unique identifier representing the thread on HackForums.
         /// </summary>
-        public int tid;
+        [JsonProperty("tid")]
+        public int ID { get; set; }
 
         /// <summary>
         /// Indicates whether on not the thread is sticky/pinned.
         /// </summary>
-        public bool sticky;
+        [JsonProperty("sticky")]
+        public bool IsStickied { get; set; }
 
         /// <summary>
         /// Subject/title of the thread.
         /// </summary>
-        public string subject;
+        [JsonProperty("subject")]
+        public string Subject { get; set; }
 
         /// <summary>
         /// Prefix to the thread subject/title.
         /// </summary>
-        public string threadprefix;
+        [JsonProperty("threadprefix")]
+        public string Prefix { get; set; }
 
         /// <summary>
         /// User ID of the creator of the thread.
         /// </summary>
-        public int user;
+        [JsonProperty("user")]
+        public int UserID { get; set; }
 
         /// <summary>
         /// Username of the creator of the thread.
         /// </summary>
-        public string username;
+        [JsonProperty("username")]
+        public string Username { get; set; }
 
         /// <summary>
         /// Indicates whether or not the thread has been closed.
         /// </summary>
-        public bool closed;
+        [JsonProperty("closed")]
+        public bool IsClosed { get; set; }
 
         /// <summary>
         /// The number of replies to the thread.
         /// </summary>
-        public int numreplies;
+        [JsonProperty("numreplies")]
+        public int ReplyCount { get; set; }
 
         /// <summary>
         /// The time the thread was created at.
         /// </summary>
-        public DateTime dateline;
+        [JsonProperty("dateline")]
+        public DateTime DateTime { get; set; }
 
         /// <summary>
         /// The time somebody last responded to the thread.
         /// </summary>
-        public DateTime lastpost;
+        [JsonProperty("lastpost")]
+        public DateTime LastPost { get; set; }
 
         /// <summary>
         /// The username of the last user to respond to the thread.
         /// </summary>
-        public string lastposter;
+        [JsonProperty("lastposter")]
+        public string LastPosterUsername { get; set; }
 
         /// <summary>
         /// The user ID of the last user to respond to the thread.
         /// </summary>
-        public int lastposteruid;
+        [JsonProperty("lastposteruid")]
+        public int LastPosterID { get; set; }
 
         /// <summary>
         /// The post ID number of the first post in the thread.
         /// </summary>
-        public int firstpost;
+        [JsonProperty("firstpost")]
+        public int FirstPostID { get; set; }
 
         /// <summary>
         /// A list of PostInformation objects up to 10 posts in the thread. Paginated.
         /// </summary>
-        public List<PostInformation> postdata;
+        [JsonProperty("postdata")]
+        public List<PostInformation> Posts { get; set; }
 
     }
 

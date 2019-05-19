@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using HF_Sharp.Serialized;
 using HF_Sharp.Networking;
+using System.Net;
 
 namespace HF_Sharp {
 
@@ -22,8 +23,7 @@ namespace HF_Sharp {
         /// <param name="apiKey">Your API key, provided by HackForums.</param>
         /// <param name="userAgent">Application name, to be used in user-agent.</param>
         /// <param name="version">Optional version number. If not provided, version will be derived from assembly.</param>
-        /// <param name="tryCaptchaBypass">If enabled, the HttpClient will run extra requests to try to bypass the HackForums captcha system.</param>
-        public HF_API(string apiKey, string userAgent, string version = "", bool tryCaptchaBypass = false) {
+        public HF_API(string apiKey, string userAgent, string version = "") {
 
             // initialize the 'Client' instance of the HttpClient class
             HttpClientHandler handler = new HttpClientHandler {
@@ -40,6 +40,16 @@ namespace HF_Sharp {
             Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Utils.Base64Encode(apiKey + ":"));
             Client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(userAgent, Assembly.GetExecutingAssembly().GetName().Version.ToString()));
 
+        }
+
+        /// <summary>
+        /// Automatically bypasses HackForums captcha/cloudflare system.
+        /// This should called immediately after initializing, if your program is running on a server.
+        /// </summary>
+        /// <param name="_2captchaApiKey">An API key to the 2Captcha website. This is used to generate a token to bypass recaptcha.</param>
+        /// <returns>Returns a boolean indicating whether or not the system has been bypassed successfully.</returns>
+        public bool BypassCaptchaSystem(string _2captchaApiKey) {
+            return Client.BypassCaptchaSystem(_2captchaApiKey);
         }
 
         /// <summary>

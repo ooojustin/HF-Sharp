@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ namespace HF_Sharp {
     /// </summary>
     public class HF_API : IDisposable {
 
-        private readonly HttpClient Client = new HttpClient(); 
+        private readonly HttpClient Client;
 
         /// <summary>
         /// Creates an instance of the HackForums API wrapper.
@@ -22,7 +22,15 @@ namespace HF_Sharp {
         /// <param name="apiKey">Your API key, provided by HackForums.</param>
         /// <param name="userAgent">Application name, to be used in user-agent.</param>
         /// <param name="version">Optional version number. If not provided, version will be derived from assembly.</param>
-        public HF_API(string apiKey, string userAgent, string version = "") {
+        /// <param name="tryCaptchaBypass">If enabled, the HttpClient will run extra requests to try to bypass the HackForums captcha system.</param>
+        public HF_API(string apiKey, string userAgent, string version = "", bool tryCaptchaBypass = false) {
+
+            // initialize the 'Client' instance of the HttpClient class
+            HttpClientHandler handler = new HttpClientHandler {
+                UseCookies = true,
+                CookieContainer = new CookieContainer()
+            };
+            Client = new HttpClient(handler);
 
             // if version application isn't specified, use refelection to get assembly version
             if (version == string.Empty)

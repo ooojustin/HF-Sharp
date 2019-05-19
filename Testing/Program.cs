@@ -11,6 +11,13 @@ namespace Testing {
 
             Console.WriteLine("Initializing API...");
             HF_API api = new HF_API("", "HF-Sharp");
+
+            // Use this if you're running your program on a server or VPN.
+            // The parameter passed to 'BypassCaptchaSystem' should be a 2Captcha API Key.
+            /*Console.WriteLine("Bypassing captcha system...");
+            api.BypassCaptchaSystem("");*/
+
+            Console.WriteLine("\nTesting GetVersion...");
             Console.WriteLine("Completed. Version #" + api.GetVersion());
 
             Console.WriteLine("\nTesting GetUserInformation...");
